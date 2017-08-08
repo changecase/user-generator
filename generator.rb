@@ -1,4 +1,4 @@
-require 'CSV'
+require 'csv'
 
 def load_data(fn='first_names.csv', 
               ln='last_names.csv', 
@@ -12,9 +12,13 @@ def load_data(fn='first_names.csv',
 end
 
 def create_name(first_names, last_names)
+  f = first_names.sample
+  l = last_names.sample
+  i = "#{f[0].upcase}#{l[0].upcase}"
   return {
-    first: first_names.sample,
-    last:  last_names.sample
+    first: f,
+    last:  l,
+    initial: i
   }
 end
 
