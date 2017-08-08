@@ -61,7 +61,8 @@ def create_user(data)
     email:      create_email(name, data[:words]),
     street:     location[:street],
     state:      location[:state],
-    city:       location[:city]
+    city:       location[:city],
+    initials:   name[:initial]
   }
 end
 
@@ -75,16 +76,17 @@ def create_users(number)
     users.push(
       <<-ITEM
       ListElement {
-        first_name: #{user[:first_name]}
-        last_name: #{user[:last_name]}
-        icon: #{user[:icon]}
-        email: #{user[:email]}
-        phone1: #{user[:phone_1]}
-        phone2: #{user[:phone_2]}
-        phone3: #{user[:phone_3]}
-        street: #{user[:street]}
-        city: #{user[:city]}
-        state: #{user[:state]}
+        first_name: "#{user[:first_name]}"
+        last_name: "#{user[:last_name]}"
+        icon: "#{user[:icon]}"
+        email: "#{user[:email]}"
+        phone1: "#{user[:phone_1]}"
+        phone2: "#{user[:phone_2]}"
+        phone3: "#{user[:phone_3]}"
+        street: "#{user[:street]}"
+        city: "#{user[:city]}"
+        state: "#{user[:state]}"
+        initials: "#{user[:initials]}"
       }
       ITEM
     )
