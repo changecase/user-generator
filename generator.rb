@@ -4,7 +4,7 @@ def load_data(fn='first_names.csv',
               ln='last_names.csv', 
               geo="us_cities_states_counties.csv")
   return {
-    first_names: CSV.read(fn).flatten,
+    people:      CSV.read(fn),
     last_names:  CSV.read(ln).flatten,
     locations:   CSV.read(geo, col_sep: '|'),
     words:       CSV.read('/usr/share/dict/words').flatten
@@ -20,15 +20,17 @@ def load_original_users(filename='.secret/original_contacts.rb')
   }
 end
 
-def create_name(first_names, last_names)
-  f = first_names.sample
+def create_name(people, last_names)
+  p = people.sample
+  f = p[0]
   l = last_names.sample.gsub(/\w+/) { |n| n.capitalize }
   i = "#{f[0].upcase}#{l[0].upcase}"
 
   return {
     first: f,
     last:  l,
-    initial: i
+    initial: i,
+    gender: p[1]
   }
 end
 
@@ -59,7 +61,7 @@ def create_location(locations, word_list)
 end
 
 def create_user(data)
-  name = create_name(data[:first_names], data[:last_names])
+  name = create_name(data[:people], data[:last_names])
   location = create_location(data[:locations], data[:words])
   return {
     first_name: name[:first],
