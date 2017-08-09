@@ -1,4 +1,5 @@
 require 'csv'
+require 'fileutils'
 
 def load_data(fn='first_names.csv', 
               ln='last_names.csv', 
@@ -60,13 +61,39 @@ def create_location(locations, word_list)
   }
 end
 
+def create_icon(gender=FALSE)
+  m_path = 'src_pics/Male'
+  f_path = 'src_pics/Female'
+  males   = Dir.entries(m_path)
+  females = Dir.entries(f_path)
+
+  if gender == "M"
+    icon = males.sample
+    path = "#{m_path}/#{icon}"
+    if File.file?(path) 
+      FileUtils.cp(path, 'user_pics')
+    end
+  elsif gender == "F"
+    icon = females.sample
+    path = "#{f_path}/#{icon}"
+    if File.file?(path) 
+      FileUtils.cp(path, 'user_pics')
+    end
+  else
+    icon = ""
+  end
+  
+  return icon
+end
+
 def create_user(data)
   name = create_name(data[:people], data[:last_names])
   location = create_location(data[:locations], data[:words])
   return {
     first_name: name[:first],
     last_name:  name[:last],
-    icon:       "contact_#{name[:first].downcase}_#{name[:last].downcase}.png",
+    #icon:       "contact_#{name[:first].downcase}_#{name[:last].downcase}.png",
+    icon:       create_icon(name[:gender]),
     phone_1:    create_phone_number,
     phone_2:    create_phone_number,
     phone_3:    create_phone_number,
