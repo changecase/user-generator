@@ -92,7 +92,6 @@ def create_user(data)
   return {
     first_name: name[:first],
     last_name:  name[:last],
-    #icon:       "contact_#{name[:first].downcase}_#{name[:last].downcase}.png",
     icon:       create_icon(name[:gender]),
     phone_1:    create_phone_number,
     phone_2:    create_phone_number,
@@ -151,8 +150,8 @@ def convert_to_qml(contacts)
   return users.join()
 end
 
-def export_users(filename, number_of_users)
-  users = create_users(number_of_users, :original_1)
+def export_users(filename, number_of_users, phone)
+  users = create_users(number_of_users, phone)
   
   File.open(filename, 'a') do |f|
     f.write convert_to_qml(users)
