@@ -11,10 +11,20 @@ def load_data(fn='first_names.csv',
   }
 end
 
+def load_original_users(filename='.secret/original_contacts.rb')
+  load filename
+
+  return {
+    original_1: PhoneContacts::PHONE1,
+    original_2: PhoneContacts::PHONE2,
+  }
+end
+
 def create_name(first_names, last_names)
   f = first_names.sample
-  l = last_names.sample
+  l = last_names.sample.gsub(/\w+/) { |n| n.capitalize }
   i = "#{f[0].upcase}#{l[0].upcase}"
+
   return {
     first: f,
     last:  l,
@@ -66,13 +76,30 @@ def create_user(data)
   }
 end
 
-def create_users(number)
+def create_users(number, phone)
   data = load_data
   users = Array.new()
+  originals = load_original_users[phone]
+
+  originals.each do |user|
+    users.push(user)
+  end
 
   number.times do
     user = create_user(data)
 
+    users.push(user)
+  end
+
+  return users
+end
+
+def convert_to_qml(contacts)
+  users = Array.new()
+
+  contacts.sort_by! { |c| c[:first_name] }
+
+  contacts.each do |user|
     users.push(
       <<-ITEM
       ListElement {
@@ -96,7 +123,9 @@ def create_users(number)
 end
 
 def export_users(filename, number_of_users)
+  users = create_users(number_of_users, :original_1)
+  
   File.open(filename, 'a') do |f|
-    f.write create_users(number_of_users)
+    f.write convert_to_qml(users)
   end
 end
