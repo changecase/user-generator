@@ -61,23 +61,27 @@ def create_location(locations, word_list)
   }
 end
 
-def create_icon(gender=FALSE)
+def create_icon(name)
+  gender = FALSE || name[:gender]
   m_path = 'src_pics/Male'
   f_path = 'src_pics/Female'
   males   = Dir.entries(m_path)
   females = Dir.entries(f_path)
+  dest_icon = "contact_#{name[:first].downcase}_#{name[:last].downcase}.jpg"
 
   if gender == "M"
-    icon = males.sample
-    path = "#{m_path}/#{icon}"
-    if File.file?(path) 
-      FileUtils.cp(path, 'user_pics')
+    src_icon = males.sample
+    src_path = "#{m_path}/#{src_icon}"
+    if File.file?(src_path) 
+      FileUtils.cp(src_path, 'user_pics')
+      FileUtils.mv("user_pics/#{src_icon}", "user_pics/#{dest_icon}")
     end
   elsif gender == "F"
-    icon = females.sample
-    path = "#{f_path}/#{icon}"
-    if File.file?(path) 
-      FileUtils.cp(path, 'user_pics')
+    src_icon = females.sample
+    src_path = "#{f_path}/#{src_icon}"
+    if File.file?(src_path) 
+      FileUtils.cp(src_path, 'user_pics')
+      FileUtils.mv("user_pics/#{src_icon}", "user_pics/#{dest_icon}")
     end
   else
     icon = ""
@@ -92,7 +96,7 @@ def create_user(data)
   return {
     first_name: name[:first],
     last_name:  name[:last],
-    icon:       create_icon(name[:gender]),
+    icon:       create_icon(name),
     phone_1:    create_phone_number,
     phone_2:    create_phone_number,
     phone_3:    create_phone_number,
