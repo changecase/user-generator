@@ -1,14 +1,37 @@
-class UserGenerator
-  require 'csv'
-  require 'fileutils'
+require 'csv'
+require 'fileutils'
 
-  def load_data(fn='first_names.csv', 
-                ln='last_names.csv', 
-                geo="us_cities_states_counties.csv")
+class UserGenerator
+  def self.load_data(fn:, ln:, geo: )
+    @fn   = fn 
+    @ln   = ln 
+    @geo  = geo
+
+    case @fn
+    when /\.csv$/
+      people_data = CSV.read(@fn)
+    else
+      people_data = @fn
+    end
+
+    case @ln
+    when /\.csv$/
+      last_name_data = CSV.read(@ln).flatten
+    else
+      last_name_data = @ln
+    end
+
+    case @geo
+    when /\.csv$/
+      location_data = CSV.read(@geo, col_sep: '|')
+    else
+      location_data = @geo
+    end
+
     return {
-      people:      CSV.read(fn),
-      last_names:  CSV.read(ln).flatten,
-      locations:   CSV.read(geo, col_sep: '|'),
+      people:      people_data,
+      last_names:  last_name_data,
+      locations:   location_data,
       words:       CSV.read('/usr/share/dict/words').flatten
     }
   end
