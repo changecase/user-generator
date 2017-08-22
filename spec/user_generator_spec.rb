@@ -64,4 +64,18 @@ describe UserGenerator do
       end
     end
   end
+
+  describe ".create_email" do
+    context "given person and a list of random words" do
+      it "returns a valid email address" do
+        @person = {
+          first: "John",
+          last:  "Doe"}
+        @dictionary = ["example"]
+        @email = UserGenerator.create_email @person, @dictionary
+
+        expect(@email).to match /john.doe@example.\w+/
+      end
+    end
+  end
 end

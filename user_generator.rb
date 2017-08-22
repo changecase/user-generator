@@ -55,7 +55,7 @@ class UserGenerator
     return "1-#{rand(100..999)}-#{'%003d' % rand(10**3)}-#{'%004d' % rand(10**4)}"
   end
 
-  def create_email(name, word_list)
+  def self.create_email(name, word_list)
     first = name[:first].downcase
     last = name[:last].downcase
     server = word_list.sample
