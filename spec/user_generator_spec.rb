@@ -54,4 +54,14 @@ describe UserGenerator do
       end
     end
   end
+
+  describe ".create_phone_number" do
+    context "given no arguments" do
+      it "returns a valid phone number" do
+        @phone_number = UserGenerator.create_phone_number
+
+        expect(@phone_number).to match /1-[1-9]\d{2}-\d{3}-\d{4}/
+      end
+    end
+  end
 end

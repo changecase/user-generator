@@ -51,7 +51,7 @@ class UserGenerator
     }
   end
 
-  def create_phone_number
+  def self.create_phone_number
     return "1-#{rand(100..999)}-#{'%003d' % rand(10**3)}-#{'%004d' % rand(10**4)}"
   end
 
