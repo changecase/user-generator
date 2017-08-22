@@ -2,10 +2,10 @@ require 'csv'
 require 'fileutils'
 
 class UserGenerator
-  def self.load_data(fn:, ln:, geo: )
-    @fn   = fn 
-    @ln   = ln 
-    @geo  = geo
+  def self.load_data(people:, last_names:, locations:, originals: nil)
+    @fn   = people 
+    @ln   = last_names 
+    @geo  = locations
 
     case @fn
     when /\.csv$/
@@ -32,16 +32,8 @@ class UserGenerator
       people:      people_data,
       last_names:  last_name_data,
       locations:   location_data,
-      words:       CSV.read('/usr/share/dict/words').flatten
-    }
-  end
-
-  def load_original_users(filename='.secret/original_contacts.rb')
-    load filename
-
-    return {
-      original_1: PhoneContacts::PHONE1,
-      original_2: PhoneContacts::PHONE2,
+      words:       CSV.read('/usr/share/dict/words').flatten,
+      base:        originals
     }
   end
 
