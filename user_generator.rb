@@ -64,7 +64,7 @@ class UserGenerator
     return "#{first}.#{last}@#{server}.#{domain}"
   end
 
-  def create_location(locations, word_list)
+  def self.create_location(locations, word_list)
     location = locations.sample
     road_type = [
       "Rd", "Ln", "St", "Ave", "Ct", "Cir", "Bnd", "Blvd", 

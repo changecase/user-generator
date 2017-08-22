@@ -66,7 +66,7 @@ describe UserGenerator do
   end
 
   describe ".create_email" do
-    context "given person and a list of random words" do
+    context "given person and a list of words" do
       it "returns a valid email address" do
         @person = {
           first: "John",
@@ -75,6 +75,21 @@ describe UserGenerator do
         @email = UserGenerator.create_email @person, @dictionary
 
         expect(@email).to match /john.doe@example.\w+/
+      end
+    end
+  end
+
+  describe ".create_location" do
+    context "given a list of locations and a list of words" do
+      before(:context) do
+        @location_list = [["Some City","State Short", "This State"]]
+        @dictionary = ["example"]
+        @location = UserGenerator.create_location @location_list, @dictionary
+      end
+      it "returns a valid address" do
+        expect(@location[:state]).to eq "This State"
+        expect(@location[:city]).to eq "Some City"
+        expect(@location[:street]).to match /\d{1,4} Example \w+/
       end
     end
   end
