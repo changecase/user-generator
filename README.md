@@ -3,18 +3,18 @@ Generate Contacts in Custom Format
 
 Load the user generator:
 
-*my_contacts.rb*
-
 ```ruby
+# my_contacts.rb
+
 require './user_generator'
 ```
 
 If you have a list of original contacts or contacts you'd like
 to make sure get included, load that file as well.
 
-*my_contacts.rb*
-
 ```ruby
+# my_contacts.rb
+
 require './user_generator'
 require '.secret/original_contacts'
 ```
@@ -22,9 +22,9 @@ require '.secret/original_contacts'
 If you just want to load the data and operate on it in a
 non-default way, use the `load_data` method.
 
-*my_contacts.rb*
-
 ```ruby
+# my_contacts.rb
+
 ...
 
 csv_data = UserGenerator.load_data(
@@ -35,9 +35,9 @@ csv_data = UserGenerator.load_data(
 )
 ```
 
-*first_names_and_gender.csv*
-
 ```csv
+# first_names_and_gender.csv
+
 Aaban,M
 Aabha,F
 Aabid,M
@@ -49,9 +49,9 @@ Zyyon,M
 Zzyzx,M
 ```
 
-*last_names.csv*
-
 ```csv
+# last_names.csv
+
 SMITH
 JOHNSON
 WILLIAMS
@@ -61,9 +61,9 @@ TANG
 ARCHER
 ```
 
-*us_cities_states_counties.csv*
-
 ```csv
+# us_cities_states_counties.csv
+
 City|State short|State full|County|City alias
 Holtsville|NY|New York|SUFFOLK|Internal Revenue Service
 Holtsville|NY|New York|SUFFOLK|Holtsville
@@ -77,9 +77,10 @@ Ward Cove|AK|Alaska|KETCHIKAN GATEWAY|Ward Cove
 Wrangell|AK|Alaska|WRANGELL|Wrangell
 ```
 
-*.secret/original_contacts*
 
 ```ruby
+# .secret/original_contacts.rb
+
 class PhoneContacts
   PHONE1 = [
     {
