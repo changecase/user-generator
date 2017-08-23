@@ -37,7 +37,7 @@ class UserGenerator
     }
   end
 
-  def create_name(people, last_names)
+  def self.create_name(people, last_names)
     p = people.sample
     f = p[0]
     l = last_names.sample.gsub(/\w+/) { |n| n.capitalize }

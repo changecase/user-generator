@@ -79,4 +79,20 @@ describe UserGenerator do
       end
     end
   end
+
+  describe ".create_name" do
+    context "given a list of people and a list of last names" do
+      it "returns a contact name" do
+        @ppl = [["John", "M"],
+                ["Jane", "F"]]
+        @last = ["Doe","Dough"]
+        @name = UserGenerator.create_name @ppl, @last
+
+        expect(@name[:first]).to    match(/John|Jane/)
+        expect(@name[:last]).to     match(/Doe|Dough/)
+        expect(@name[:initial]).to  eq "JD"
+        expect(@name[:gender]).to   match(/M|F/)
+      end
+    end
+  end
 end
