@@ -16,7 +16,7 @@ to make sure get included, load that file as well.
 # my_contacts.rb
 
 require './user_generator'
-require '.secret/original_contacts'
+require '.secret/base_contacts'
 ```
 
 If you just want to load the data and operate on it in a
@@ -31,7 +31,7 @@ csv_data = UserGenerator.load_data(
   people:     'first_names_and_gender.csv',
   last_names: 'last_names.csv',
   locations:  'us_cities_states_counties.csv',
-  originals:  PhoneContacts::PHONE1
+  originals:  BaseContacts::PEOPLE
 )
 ```
 
@@ -79,10 +79,10 @@ Wrangell|AK|Alaska|WRANGELL|Wrangell
 
 
 ```ruby
-# .secret/original_contacts.rb
+# .secret/base_contacts.rb
 
-class PhoneContacts
-  PHONE1 = [
+class BaseContacts
+  PEOPLE = [
     {
       first_name: "Tom",
       last_name:  "Testerson",
