@@ -60,7 +60,8 @@ describe UserGenerator do
       it "returns a valid phone number" do
         @phone_number = UserGenerator.create_phone_number
 
-        expect(@phone_number).to match /1-[1-9]\d{2}-\d{3}-\d{4}/
+        expect(@phone_number).to match(
+          /1-[1-9]\d{2}-\d{3}-\d{4}/)
       end
     end
   end
@@ -74,7 +75,7 @@ describe UserGenerator do
         @dictionary = ["example"]
         @email = UserGenerator.create_email @person, @dictionary
 
-        expect(@email).to match /john.doe@example.\w+/
+        expect(@email).to match(/john\.doe@example\.\w+/)
       end
     end
   end
