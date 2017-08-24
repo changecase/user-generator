@@ -37,7 +37,7 @@ class UserGenerator
     }
   end
 
-  def create_name(people, last_names)
+  def self.create_name(people, last_names)
     p = people.sample
     f = p[0]
     l = last_names.sample.gsub(/\w+/) { |n| n.capitalize }
@@ -106,7 +106,7 @@ class UserGenerator
     return dest_icon
   end
 
-  def create_user(data)
+  def self.create_user(data)
     name = create_name(data[:people], data[:last_names])
     location = create_location(data[:locations], data[:words])
     return {

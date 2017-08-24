@@ -107,4 +107,34 @@ describe UserGenerator do
       end
     end
   end
+
+  describe ".create_user" do
+    context "given data loaded into an object" do
+      before(:context) do
+        @data = {
+          people:     [["John","M"],
+                       ["Jane","F"]],
+          last_names: ["Doe", "Dough"],
+          locations:  [["Portland","OR","Oregon"],
+                       ["Tacoma",  "WA","Washington"]],
+          words:      ["example"]}
+      end
+
+      it "creates a new user" do
+        @user = UserGenerator.create_user(@data)
+
+        expect(@user[:first_name]).not_to be nil
+        expect(@user[:last_name]).not_to  be nil
+        expect(@user[:icon]).not_to       be nil
+        expect(@user[:phone_1]).not_to    be nil
+        expect(@user[:phone_2]).not_to    be nil
+        expect(@user[:phone_3]).not_to    be nil
+        expect(@user[:email]).not_to      be nil
+        expect(@user[:street]).not_to     be nil
+        expect(@user[:state]).not_to      be nil
+        expect(@user[:city]).not_to       be nil
+        expect(@user[:initials]).not_to   be nil
+      end
+    end
+  end
 end
