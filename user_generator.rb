@@ -77,7 +77,7 @@ class UserGenerator
     }
   end
 
-  def create_icon(name)
+  def self.create_icon(name)
     gender = FALSE || name[:gender]
     m_path = 'src_pics/Male'
     f_path = 'src_pics/Female'

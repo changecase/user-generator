@@ -93,4 +93,18 @@ describe UserGenerator do
       end
     end
   end
+
+  describe ".create_icon" do
+    context "given a person" do
+      it "names the picture off the person's name" do
+        @person = {
+          first: "John",
+          last:  "Doe",
+          gender: "M"}
+        @icon = UserGenerator.create_icon(@person)
+
+        expect(@icon).to eq "contact_john_doe.jpg"
+      end
+    end
+  end
 end
