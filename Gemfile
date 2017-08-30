@@ -13,3 +13,7 @@ gem 'rubocop', '0.49.1'
 # for tdd
 
 gem 'rspec', '3.6.0', :require => false
+
+# for templating
+
+gem 'liquid', '4.0.0'

@@ -145,34 +145,6 @@ class UserGenerator
     end
   end
 
-  def convert_to_qml(contacts)
-    users = Array.new()
-
-    contacts.sort_by! { |c| c[:first_name] }
-
-    contacts.each do |user|
-      users.push(
-        <<-ITEM
-        ListElement {
-          first_name: "#{user[:first_name]}"
-          last_name: "#{user[:last_name]}"
-          icon: "#{user[:icon]}"
-          email: "#{user[:email]}"
-          phone1: "#{user[:phone_1]}"
-          phone2: "#{user[:phone_2]}"
-          phone3: "#{user[:phone_3]}"
-          street: "#{user[:street]}"
-          city: "#{user[:city]}"
-          state: "#{user[:state]}"
-          initials: "#{user[:initials]}"
-        }
-        ITEM
-      )
-    end
-
-    return users.join()
-  end
-
   def export_users(filename, number_of_users, phone)
     users = create_users(number_of_users, phone)
     
