@@ -32,7 +32,7 @@ describe UserGenerator do
         }]
       end
 
-      it "returns the each of these and a list of words in the computer's dictionary" do
+      it "returns each of these and a list of words in the computer's dictionary" do
         @users = UserGenerator.load_data(
           people: @ppl, 
           last_names: @last, 
@@ -55,102 +55,105 @@ describe UserGenerator do
     end
   end
 
-  describe ".create_phone_number" do
-    context "given no arguments" do
-      it "returns a valid phone number" do
-        @phone_number = UserGenerator.create_phone_number
-
-        expect(@phone_number).to match(
-          /1-[1-9]\d{2}-\d{3}-\d{4}/)
-      end
-    end
-  end
-
-  describe ".create_email" do
-    context "given person and a list of words" do
-      it "returns a valid email address" do
-        @person = {
-          first: "John",
-          last:  "Doe"}
-        @dictionary = ["example"]
-        @email = UserGenerator.create_email @person, @dictionary
-
-        expect(@email).to match(/john\.doe@example\.\w+/)
-      end
-    end
-  end
-
-  describe ".create_name" do
-    context "given a list of people and a list of last names" do
-      it "returns a contact name" do
-        @ppl = [["John", "M"],
-                ["Jane", "F"]]
-        @last = ["Doe","Dough"]
-        @name = UserGenerator.create_name @ppl, @last
-
-        expect(@name[:first]).to    match(/John|Jane/)
-        expect(@name[:last]).to     match(/Doe|Dough/)
-        expect(@name[:initial]).to  eq "JD"
-        expect(@name[:gender]).to   match(/M|F/)
-      end
-    end
-  end
-
-  describe ".create_location" do
-    context "given a list of locations and a list of words" do
-      before(:context) do
-        @location_list = [["Some City","State Short", "This State"]]
-        @dictionary = ["example"]
-        @location = UserGenerator.create_location @location_list, @dictionary
-      end
-      it "returns a valid address" do
-        expect(@location[:state]).to eq "This State"
-        expect(@location[:city]).to eq "Some City"
-        expect(@location[:street]).to match /\d{1,4} Example \w+/
-      end
-    end
-  end
-
-  describe ".create_icon" do
-    context "given a person" do
-      it "names the picture off the person's name" do
-        @person = {
-          first: "John",
-          last:  "Doe",
-          gender: "M"}
-        @icon = UserGenerator.create_icon(@person)
-
-        expect(@icon).to eq "contact_john_doe.jpg"
-      end
-    end
-  end
-
   describe ".create_user" do
     context "given data loaded into an object" do
       before(:context) do
         @data = {
           people:     [["John","M"],
                        ["Jane","F"]],
-          last_names: ["Doe", "Dough"],
+          last_names: ["Doe", 
+                       "Dough"],
           locations:  [["Portland","OR","Oregon"],
                        ["Tacoma",  "WA","Washington"]],
           words:      ["example"]}
+        @user = UserGenerator.create_user(@data)
       end
 
       it "creates a new user" do
-        @user = UserGenerator.create_user(@data)
+        expect(@user).to have_key :first_name
+        expect(@user).to have_key :last_name
+        expect(@user).to have_key :initials
+        expect(@user).to have_key :gender
+        expect(@user).to have_key :phone_1
+        expect(@user).to have_key :phone_2
+        expect(@user).to have_key :phone_3
+        expect(@user).to have_key :icon
+        expect(@user).to have_key :email
+        expect(@user).to have_key :street
+        expect(@user).to have_key :city
+        expect(@user).to have_key :state
+      end
 
-        expect(@user[:first_name]).not_to be nil
-        expect(@user[:last_name]).not_to  be nil
-        expect(@user[:icon]).not_to       be nil
-        expect(@user[:phone_1]).not_to    be nil
-        expect(@user[:phone_2]).not_to    be nil
-        expect(@user[:phone_3]).not_to    be nil
-        expect(@user[:email]).not_to      be nil
-        expect(@user[:street]).not_to     be nil
-        expect(@user[:state]).not_to      be nil
-        expect(@user[:city]).not_to       be nil
-        expect(@user[:initials]).not_to   be nil
+      it "creates first name, last name, and gender for the user" do
+        expect(@user[:first_name]).to match /John|Jane/
+        expect(@user[:last_name]).to  match /Doe|Dough/
+        expect(@user[:initials]).to   eq "JD"
+      end
+
+      it "determines the gender of the user" do
+        expect(@user[:gender]).to     match(/M|F/)
+      end
+
+      it "creates phone numbers for the user" do
+        expect(@user[:phone_1]).to    match(/1-[1-9]\d{2}-\d{3}-\d{4}/)
+        expect(@user[:phone_2]).to    match(/1-[1-9]\d{2}-\d{3}-\d{4}/)
+        expect(@user[:phone_3]).to    match(/1-[1-9]\d{2}-\d{3}-\d{4}/)
+      end
+
+      it "creates an email address for the user" do
+        expect(@user[:email]).to      match(
+          /(john|jane)\.(doe|dough)@example\.\w+/)
+      end
+
+      it "creates an address for the user" do
+        expect(@user[:street]).to     match /\d{1,4} Example \w+/
+        expect(@user[:city]).to       match /Portland|Tacoma/
+        expect(@user[:state]).to      match /Oregon|Washington/
+      end
+
+      it "creates a profile picture for the user" do
+        expect(@user[:icon]).to       match(
+        /contact_(john|jane)_(doe|dough)\.jpg/)
+      end
+    end
+  end
+
+  describe ".create_users" do
+    context "given data loaded into an object" do
+      before(:context) do
+        @data = UserGenerator.load_data(
+          people: [["John", "M"],
+                   ["Jane", "F"]], 
+          last_names: ["Doe","Dough"], 
+          locations: [["Portland","Oregon"],
+                      ["Tacoma","Washington"]],
+          originals: [{
+            first_name: "Tom",
+            last_name:  "Testerson",
+            icon:       "contact_tom_testerson.jpg",
+            phone_1:    "1-555-123-4567",
+            phone_2:    "",
+            phone_3:    "",
+            email:      "tom@example.com",
+            street:     "1234 Street Ave.",
+            state:      "Sample",
+            city:       "Exampleton",
+            initials:   "TT"
+          }]
+        )
+        @users = UserGenerator.create_users(data: @data, amount: 3)
+      end
+
+      it "creates the number of users specified" do
+        expect(@users.length).to eq 3
+      end
+
+      it "contains any base users" do
+        @user = @users.select do |user|
+          user[:icon] == "contact_tom_testerson.jpg"
+        end
+
+        expect(@user).not_to be nil
       end
     end
   end
