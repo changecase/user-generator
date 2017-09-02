@@ -40,10 +40,13 @@ class UserGenerator
   def self.create_users(data:, amount:)
     users = Array.new()
     originals = data[:base]
-    amount -= originals.length
 
-    originals.each do |user|
-      users.push(user)
+    unless originals.nil?
+      amount -= originals.length
+
+      originals.each do |user|
+        users.push(user)
+      end
     end
 
     amount.times do
@@ -116,40 +119,15 @@ class UserGenerator
     end
 
     private def create_icon(name)
-      gender = FALSE || name[:gender]
-      m_path = 'src_pics/Male'
-      f_path = 'src_pics/Female'
-      males   = Dir.entries(m_path)
-      females = Dir.entries(f_path)
-      dest_icon = "contact_#{name[:first].downcase}_#{name[:last].downcase}.jpg"
-
-      if gender == "M"
-        src_icon = males.sample
-        src_path = "#{m_path}/#{src_icon}"
-        if File.file?(src_path) 
-          FileUtils.cp(src_path, 'user_pics')
-          FileUtils.mv("user_pics/#{src_icon}", "user_pics/#{dest_icon}")
-        end
-      elsif gender == "F"
-        src_icon = females.sample
-        src_path = "#{f_path}/#{src_icon}"
-        if File.file?(src_path) 
-          FileUtils.cp(src_path, 'user_pics')
-          FileUtils.mv("user_pics/#{src_icon}", "user_pics/#{dest_icon}")
-        end
-      else
-        dest_icon = ""
-      end
-      
-      return dest_icon
+      return "contact_#{name[:first].downcase}_#{name[:last].downcase}.jpg"
     end
   end
-
-  def export_users(filename, number_of_users, phone)
-    users = create_users(number_of_users, phone)
-    
-    File.open(filename, 'a') do |f|
-      f.write convert_to_qml(users)
-    end
-  end
+#
+#  def export_users(filename, number_of_users, phone)
+#    users = create_users(number_of_users, phone)
+#    
+#    File.open(filename, 'a') do |f|
+#      f.write convert_to_qml(users)
+#    end
+#  end
 end
