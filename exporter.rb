@@ -1,5 +1,6 @@
 require 'fileutils'
 require 'liquid'
+require 'rmagick'
 
 class Exporter
   def self.convert(users:, format:)
@@ -50,19 +51,15 @@ class Exporter
         @source_image = @male_images.sample
         @source_image_path    = "#{source_images}/Male/#{@source_image}"
         if File.file?(@source_image_path)
-          FileUtils.cp(@source_image_path, @target_image_folder)
-          FileUtils.mv(
-            "#{filename}_images/#{@source_image}", 
-            "#{filename}_images/#{user[:icon]}")
+          @image = Magick::Image.read(@source_image_path).first
+          @image.resize_to_fill(300,300).write("#{filename}_images/#{user[:icon]}")
         end
       when "F"
         @source_image = @female_images.sample
         @source_image_path    = "#{source_images}/Female/#{@source_image}"
         if File.file?(@source_image_path)
-          FileUtils.cp(@source_image_path, @target_image_folder)
-          FileUtils.mv(
-            "#{filename}_images/#{@source_image}", 
-            "#{filename}_images/#{user[:icon]}")
+          @image = Magick::Image.read(@source_image_path).first
+          @image.resize_to_fill(300,300).write("#{filename}_images/#{user[:icon]}")
         end
       end
     end

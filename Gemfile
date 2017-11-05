@@ -17,3 +17,6 @@ gem 'rspec', '3.6.0', :require => false
 # for templating
 
 gem 'liquid', '4.0.0'
+
+# to process images
+gem 'rmagick'
