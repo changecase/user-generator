@@ -33,9 +33,6 @@ class Exporter
   end
 
   def self.export(filename:, users:, source_images:, target_format:)
-    @male_images    = Dir.entries("#{source_images}/Male")
-    @female_images  = Dir.entries("#{source_images}/Female")
-
     # Create a folder to put the profile images in.
     @target_image_folder = "#{filename}_images"
 
@@ -48,19 +45,15 @@ class Exporter
     users.each do |user|
       case user[:gender]
       when "M"
-        @source_image = @male_images.sample
-        @source_image_path    = "#{source_images}/Male/#{@source_image}"
-        if File.file?(@source_image_path)
-          @image = Magick::Image.read(@source_image_path).first
-          @image.resize_to_fill(300,300).write("#{filename}_images/#{user[:icon]}")
-        end
+        convert_image(identity:      "Male",
+                     source_images: source_images, 
+                     filename:      filename,
+                     user:          user)
       when "F"
-        @source_image = @female_images.sample
-        @source_image_path    = "#{source_images}/Female/#{@source_image}"
-        if File.file?(@source_image_path)
-          @image = Magick::Image.read(@source_image_path).first
-          @image.resize_to_fill(300,300).write("#{filename}_images/#{user[:icon]}")
-        end
+        convert_image(identity:      "Female",
+                     source_images: source_images,
+                     filename:      filename,
+                     user:          user)
       end
     end
 
@@ -70,6 +63,38 @@ class Exporter
     # save the users to a file
     File.open(filename, 'w') do |f|
       f.write @formatted_list
+    end
+  end
+
+  class << self
+    private def convert_image(identity:, source_images:, 
+                              filename:, user:)
+
+      @identity_images = Dir.entries("#{source_images}/#{identity}")
+      @source_image = select_image(images: @identity_images)
+      @source_image_path = "#{source_images}/#{identity}/#{@source_image}"
+
+      puts @source_image
+      if File.file? @source_image_path
+        @image = Magick::Image.read(@source_image_path).first
+        @image.resize_to_fill(300,300).write(
+          "#{filename}_images/#{user[:icon]}")
+      end
+    end
+
+    private def select_image(images:)
+      @ignore_files = [
+        ".",
+        "..",
+        ".DS_Store"
+      ]
+      @selected_image = images.sample
+
+      if @ignore_files.include? @selected_image
+        select_image(images: images)
+      else
+        return @selected_image
+      end
     end
   end
 end
