@@ -45,6 +45,7 @@ class UserGenerator
       amount -= originals.length
 
       originals.each do |user|
+        user[:original] = TRUE
         users.push(user)
       end
     end

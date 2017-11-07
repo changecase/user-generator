@@ -43,17 +43,24 @@ class Exporter
     # Iterate over each user to find the icon name and gender.
     # Use these to grab the right pictures.
     users.each do |user|
-      case user[:gender]
-      when "M"
-        convert_image(identity:      "Male",
-                     source_images: source_images, 
-                     filename:      filename,
-                     user:          user)
-      when "F"
-        convert_image(identity:      "Female",
-                     source_images: source_images,
-                     filename:      filename,
-                     user:          user)
+      if user[:original]
+        puts "This is an original user"
+        FileUtils.cp(
+          "#{source_images}/static/#{user[:icon]}", 
+          @target_image_folder)
+      else
+        case user[:gender]
+        when "M"
+          convert_image(identity:      "Male",
+                       source_images: source_images, 
+                       filename:      filename,
+                       user:          user)
+        when "F"
+          convert_image(identity:      "Female",
+                       source_images: source_images,
+                       filename:      filename,
+                       user:          user)
+        end
       end
     end
 
