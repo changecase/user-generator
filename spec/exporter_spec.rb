@@ -88,15 +88,15 @@ ListElement {
 
       it "creates a file based on the provided filename" do
         @file = File.file?("my_users")
-        expect(@file).to be TRUE
+        expect(@file).to be true
       end
 
       it "creates a folder of images" do
         @folder = File.directory?("my_users_images")
         @files = File.file?("my_users_images/contact_test_testerton.jpg")
 
-        expect(@folder).to be TRUE
-        expect(@files).to be TRUE
+        expect(@folder).to be true
+        expect(@files).to be true
       end
 
       after(:context) do
