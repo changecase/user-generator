@@ -3,3 +3,5 @@
 *.swp
 *.lock
 *.swo
+.DS_Store
+.secret/*
