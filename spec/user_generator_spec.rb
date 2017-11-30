@@ -85,8 +85,8 @@ describe UserGenerator do
       end
 
       it "creates first name, last name, and gender for the user" do
-        expect(@user[:first_name]).to match /John|Jane/
-        expect(@user[:last_name]).to  match /Doe|Dough/
+        expect(@user[:first_name]).to match( /John|Jane/ )
+        expect(@user[:last_name]).to  match( /Doe|Dough/ )
         expect(@user[:initials]).to   eq "JD"
       end
 
@@ -106,9 +106,9 @@ describe UserGenerator do
       end
 
       it "creates an address for the user" do
-        expect(@user[:street]).to     match /\d{1,4} Example \w+/
-        expect(@user[:city]).to       match /Portland|Tacoma/
-        expect(@user[:state]).to      match /Oregon|Washington/
+        expect(@user[:street]).to     match (/\d{1,4} Example \w+/)
+        expect(@user[:city]).to       match (/Portland|Tacoma/)
+        expect(@user[:state]).to      match (/Oregon|Washington/)
       end
 
       it "creates a profile picture for the user" do
