@@ -46,7 +46,7 @@ class UserGenerator
       amount -= originals.length
 
       originals.each do |user|
-        user[:original] = TRUE
+        user[:original] = true
         users.push(user)
       end
     end
@@ -63,16 +63,17 @@ class UserGenerator
   class << self
     def create_user(data)
       name = create_name(data[:people], data[:last_names])
+      email = create_email(name, data[:words][:pinyin])
       location = create_location(data[:locations], data[:words][:word])
       work_phone_type = rand(0..1) > 0.6 ? 'cell' : 'land'
       return {
         first_name: name[:first],
         last_name:  name[:last],
-        icon:       create_icon(name),
+        icon:       create_icon(email),
         phone_1:    create_phone_number(type: 'cell'),
         phone_2:    create_phone_number(type: 'land'),
         phone_3:    create_phone_number(type: work_phone_type),
-        email:      create_email(name, data[:words][:pinyin]),
+        email:      email,
         street:     location[:street],
         state:      location[:state],
         city:       location[:city],
@@ -147,8 +148,9 @@ class UserGenerator
       }
     end
 
-    private def create_icon(name)
-      return "contact_#{name[:first].downcase}_#{name[:last].downcase}.jpg"
+    private def create_icon(email)
+      identifier = email.gsub(/(.*)\.(.*)@.*$/,'\1_\2')
+      return "contact_#{identifier}.jpg"
     end
   end
 #
